@@ -1,4 +1,4 @@
-import { applyMiddleware, compose, createStore, Store } from "redux";
+import { AnyAction, applyMiddleware, compose, createStore, Dispatch, Middleware, Store } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { persistStore } from "redux-persist";
 import { createLogger } from "redux-logger";
@@ -15,11 +15,17 @@ const dev =
   process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test";
 
 const sagaMiddleware = createSagaMiddleware();
+
 const makeStore = (initialState = {}) => {
   const loggerMiddleware = createLogger({
     predicate: (getState: any, action: any) =>
       !typesToExclude.includes(action.type),
   });
+
+  const middlewares: Middleware<{}, any, Dispatch<AnyAction>>[] = [];
+  if (dev) {
+    middlewares.push(loggerMiddleware)
+  }
 
   const store = configureStore({
     reducer: rootReducer,
@@ -36,7 +42,7 @@ const makeStore = (initialState = {}) => {
         },
       })
         .prepend(sagaMiddleware)
-        .concat(loggerMiddleware),
+        .concat(...middlewares),
   });
 
   const persist = persistStore(store, undefined, () =>
