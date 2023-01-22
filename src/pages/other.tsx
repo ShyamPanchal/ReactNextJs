@@ -4,17 +4,14 @@ import styles from "@/styles/Home.module.css";
 import { useDispatch } from "react-redux";
 import { getSampleRequestedAction } from "@/lib/ducks/sample/actions";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function OtherHome() {
   const dispatch = useDispatch();
   const router = useRouter();
   const onClick = () => {
-    dispatch(getSampleRequestedAction({ value: 1 }));
-
-    // router.push("other");
+    dispatch(getSampleRequestedAction({ value: true }));
   };
   return (
     <>
@@ -25,12 +22,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <h2 className={inter.className}>Home Page</h2>
-        <button onClick={onClick}>
-          <Link rel="preload prefetch" href="/other">
-            Click me
-          </Link>
-        </button>
+        <h2 className={inter.className}>Other Home Page</h2>
+        <button onClick={onClick}>Click me</button>
       </main>
     </>
   );
