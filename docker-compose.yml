@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  webapp:
+    container_name: webapp
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    hostname: webapp
+    ports:
+      - 3000:3000
+    environment:
+      - key=value
+    networks:
+      - webapp_network
+    restart: unless-stopped
+
+networks:
+  webapp_network:
+    name: "webapp"
